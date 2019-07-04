@@ -1,0 +1,53 @@
+mysql> desc population;
++--------------+------------------+------+-----+---------+----------------+
+| Field        | Type             | Null | Key | Default | Extra          |
++--------------+------------------+------+-----+---------+----------------+
+| Id           | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| Name         | varchar(60)      | NO   |     | NULL    |                |
+| HiddenLayers | int(10) unsigned | NO   |     | 1       |                |
+| HiddenNodes  | int(10) unsigned | NO   |     | 6       |                |
+| Size         | int(10) unsigned | NO   |     | 2000    |                |
+| MutationRate | float            | NO   |     | 0.02    |                |
+| Top          | float            | NO   |     | 0.2     |                |
+| MovesAtStart | int(10) unsigned | NO   |     | 100     |                |
+| MovesForFood | int(10) unsigned | NO   |     | 50      |                |
+| BestScore    | int(10) unsigned | YES  |     | 0       |                |
++--------------+------------------+------+-----+---------+----------------+
+
+
+mysql> desc snakes;
++--------------+----------------------+------+-----+---------+----------------+
+| Field        | Type                 | Null | Key | Default | Extra          |
++--------------+----------------------+------+-----+---------+----------------+
+| Id           | int(10) unsigned     | NO   | PRI | NULL    | auto_increment |
+| IdPopulation | int(10) unsigned     | NO   | MUL | NULL    |                |
+| Generation   | int(10) unsigned     | NO   |     | NULL    |                |
+| Score        | smallint(5) unsigned | NO   |     | NULL    |                |
++--------------+----------------------+------+-----+---------+----------------+
+
+CREATE TABLE population
+(
+Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+Name varchar(60) NOT NULL,
+HiddenLayers int unsigned not null default 1,
+HiddenNodes int unsigned not null default 6,
+Size int unsigned not null default 2000,
+MutationRate float not null default 0.02,
+Top float not null default 0.2,
+MovesAtStart int unsigned not null default 100,
+MovesForFood int unsigned not null default 100,
+BestScore int unsigned default 0
+)
+ENGINE = innodb
+default character set utf8 collate utf8_unicode_ci;
+
+CREATE TABLE snakes
+(
+Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+IdPopulation int unsigned not null,
+Generation int unsigned not null,
+Score smallint unsigned not null,
+constraint obcy foreign key(IdPopulation) references population(Id)
+)
+ENGINE = innodb
+default character set utf8 collate utf8_unicode_ci;
